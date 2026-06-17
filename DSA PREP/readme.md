@@ -141,3 +141,103 @@ How to find         .get(key)               .contains(value)
 Built on            hash table              HashMap internally
 
 # Time & Space complexity
+1. Time complexity
+- measures how the speed of your code changes as the amount of data grows.
+
+- Write it as O(something) - Big O notation
+- You have a task to do.
+  How much longer does it take if you double the data?
+
+O(1)   → same time, doesn't matter how much data -> constant time
+O(n)   → double the data → double the time -> Linear time
+O(n²)  → double the data → FOUR TIMES the time
+
+1. O(1) - Constant time
+- No matter how much data you have, it always takes the same amount of time.
+
+// HashMap get — always instant, doesn't matter if 10 or 10 million entries
+Map<String, Integer> map = new HashMap<>();
+map.get("Alice"); // O(1) — jump directly to bucket
+10 entries    → 1 operation
+1000 entries  → 1 operation
+1M entries    → 1 operation
+
+2. O(n) - Linear Time
+- Time grows proportionally with data.
+- Double the data -> double the time
+
+// Looping through a list — visit every item once
+List<String> names = new ArrayList<>();
+for (String name : names) {  // O(n)
+System.out.println(name);
+}
+
+10 items    → 10 operations
+1000 items  → 1000 operations
+1M items    → 1M operations
+
+3. O(n²) - Quadratic Time
+- Nested loops. For every item, you loop through all items again.
+- Double the data -> 4 times the time.
+
+// Nested loop — for every user, check every blocked user
+for (String user : users) {           // n iterations
+for (String blocked : blockedUsers) { // n iterations each time
+if (user.equals(blocked)) { ... }
+}
+}
+// Total: n × n = n²
+
+10 items    → 100 operations
+1000 items  → 1,000,000 operations
+1M items    → 1,000,000,000,000 operations ← unusable
+
+2. Space Complexity
+- How much extra memory your code uses as data grows.
+
+0(1) - uses the SAME memory regardless of input size.
+O(n) - memory grows proportionally with input size.
+
+// O(1) space — just 3 variables, no matter how big the list
+int count = 0;
+int sum = 0;
+int max = 0;
+
+// O(n) space — storing every item in a new structure
+Set<String> seen = new HashSet<>();
+for (String name : names) {
+seen.add(name); // set grows with input
+}
+
+Operation         Time        Why
+─────────────────────────────────────────────────
+HashMap.put()     O(1)        hash → jump to bucket
+HashMap.get()     O(1)        hash → jump to bucket
+HashMap.remove()  O(1)        hash → jump to bucket
+
+HashSet.add()     O(1)        hash → jump to bucket
+HashSet.contains() O(1)       hash → jump to bucket
+HashSet.remove()  O(1)        hash → jump to bucket
+
+List.contains()   O(n)        must check every item one by one
+
+
+
+
+---------------------------------------------
+- Convert a List to a hashset when doing lookups inside a loop.
+
+// BAD — O(n²)
+for (String user : users) {
+if (blockedList.contains(user)) { // List.contains = O(n)
+count++;
+}
+}
+
+// GOOD — O(n)
+Set<String> blockedSet = new HashSet<>(blockedList); // convert once O(n)
+for (String user : users) {
+if (blockedSet.contains(user)) { // HashSet.contains = O(1)
+count++;
+}
+}
