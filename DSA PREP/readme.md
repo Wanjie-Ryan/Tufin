@@ -128,3 +128,16 @@ blacklist.add("spammer@email.com");
 if (blacklist.contains(userEmail)) {
 System.out.println("Blocked!");
 }
+
+# Hashmap VS Hasset
+
+HashMap                 HashSet
+What it stores      key → value pairs       values only
+Duplicates          keys must be unique     all values unique
+Main use            lookup, counting,       existence check,
+grouping                duplicate removal
+How to add          .put(key, value)        .add(value)
+How to find         .get(key)               .contains(value)
+Built on            hash table              HashMap internally
+
+# Time & Space complexity
