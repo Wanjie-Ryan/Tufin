@@ -383,3 +383,7 @@ int x = 10 / 0;            // ArithmeticException
 
 - Unchecked → Java only discovers it at runtime
 "your code runs but then blows up"
+
+// difference btn == and .equals while comparing
+== compares memory addresses, are these two variables pointing to the exact same obejct in memory
+.equals() compares actual content, do these two strings contain the same characters?
