@@ -1,4 +1,4 @@
-package Quiz1;
+package sets;
 
 import java.util.ArrayList;
 import java.util.HashSet;

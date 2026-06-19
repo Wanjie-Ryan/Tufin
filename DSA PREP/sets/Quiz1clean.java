@@ -1,4 +1,4 @@
-package Quiz1;
+package sets;
 
 //Given a list of email addresses, write a method that returns true if any email appears more than once, false if all emails are unique.
 //Input:  ["ryan@gmail.com", "alice@gmail.com", "ryan@gmail.com"]

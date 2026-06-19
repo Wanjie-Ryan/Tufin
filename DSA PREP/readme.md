@@ -241,3 +241,145 @@ if (blockedSet.contains(user)) { // HashSet.contains = O(1)
 count++;
 }
 }
+
+# Lists and LinkedLists
+- An array is the most primitive way to store multiple items in java. It has fixed size - once you create it, you 
+  cannot change its size.
+- // declare an array of size 3
+  String[] names = new String[3];
+
+names[0] = "Alice";
+names[1] = "Bob";
+names[2] = "Mary";
+
+// now try to add a 4th item
+names[3] = "Ryan"; // ❌ crashes — ArrayIndexOutOfBoundsException
+
+- Size is locaked at creation
+- Need more space? Too bad
+1. List
+- This is just an interface, An ArrayList and LinkedLists are its implementations.
+
+2. ArrayList
+- Dynamic Array, grows and shrinks depending on size.
+  Index:  0       1       2       3
+  Data: [Alice] [Bob]  [Mary]  [John]
+
+- Each item has a position starting from 0. You can jump directly to any position instantly.
+- Operation              Time       Why
+  ─────────────────────────────────────────────────────
+  get(index)             O(1)       jump directly to position
+  add(item) at end       O(1)       just append to end
+  add(item) at index 0   O(n)       must shift everything right
+  remove(index 0)        O(n)       must shift everything left
+  contains(item)         O(n)       must check every item one by one
+  size()                 O(1)       stored as a variable
+
+- Insert "Ryan" at position 0:
+
+Before: [Alice][Bob][Mary]
+0      1    2
+
+Must shift everything right first:
+[     ][Alice][Bob][Mary]
+0     1     2    3
+
+Then insert:
+[Ryan][Alice][Bob][Mary]
+0     1     2    3
+
+3. LinkedLists
+- A linkedlist stores data as a chain of nodes. Each node holds:
+- Actual data, pointer to the next node.
+- [Alice | •]→[Bob | •]→[Mary | •]→[null]
+  0            1          2
+- there are no indexes. To find item 2, you must walk from the start.
+- Start at Alice -> follow pointer -> Bob -> follow pointer -> Mary -> Found it.
+- Operation                Time      Why
+  ─────────────────────────────────────────────────────
+  addFirst() / addLast()   O(1)      just update pointer
+  removeFirst()            O(1)      just update pointer
+  get(index)               O(n)      must walk from head
+  contains(item)           O(n)      must walk from head
+  add(item) middle         O(n)      must walk to position first
+
+  - ArrayList VS LinkedList
+    ArrayList                                           LinkedList
+      ─────────────────────────────────────────────────────
+      Internal structure  dynamic array       chain of nodes
+      Access by index     O(1) ← winner      O(n)
+      Add to end          O(1)               O(1)
+      Add to beginning    O(n)               O(1) ← winner
+      Remove from middle  O(n)               O(n)
+      Memory              less               more (stores pointers too)
+      Use when            frequent reads     frequent add/remove
+      access by index    at start or end
+
+- Use ArrayList when:
+  ✅ You read data more than you write
+  ✅ You need to access items by index
+  ✅ You're returning results from an API
+  ✅ Most day to day use cases
+
+- Use LinkedList when:
+✅ You frequently add or remove from the beginning
+✅ You're building a queue (first in first out)
+✅ You're building a task scheduler
+✅ Order of insertion and removal matters more than lookup
+
+- EXCEPTION
+- Something unexpected happened and I don't know how to continue.
+- You're driving to a destination. Normally you follow the road - that's the normal program flow.
+- Suddenly there's a roadblock - that's an exception.
+
+- You have 2 choices:
+- Handle it - find a detour and keep going.
+- Ignore it - crash into the roadblock
+
+String name = null;
+System.out.println(name.length); // crash - NullPointerException.
+
+// java hits null.length(), has no idea wjhat to do, throws an exception, and your program stops.
+
+# Types of Exceptions
+1. Checked Exceptions
+- These are exceptions Java forces you to handle. If you don't code, your code won't even compile.
+- These represent situations that are outside your control
+  but you can reasonably recover from.
+
+// Reading a file — file might not exist
+// Java forces you to handle this
+public void readFile() throws IOException {
+FileReader reader = new FileReader("data.txt"); // checked exception
+}
+
+IOException        → file operations
+SQLException       → database operations
+FileNotFoundException → file not found
+
+2. Unchecked exceptions
+- Exceptions Java does not force you to handle, they happen at runtime due to programming mistakes.
+- // These compile fine but crash at runtime
+
+String name = null;
+name.length();              // NullPointerException
+
+int[] arr = new int[3];
+arr[10] = 5;                // ArrayIndexOutOfBoundsException
+
+String number = "abc";
+Integer.parseInt(number);   // NumberFormatException
+
+int x = 10 / 0;            // ArithmeticException
+
+- NullPointerException         → calling method on null
+  ArrayIndexOutOfBoundsException → accessing index that doesn't exist
+  NumberFormatException        → parsing "abc" as a number
+  ArithmeticException          → dividing by zero
+  IllegalArgumentException     → passing invalid argument
+
+- Checked   → Java warns you at compile time
+  "you MUST handle this before I let you run"
+
+- Unchecked → Java only discovers it at runtime
+"your code runs but then blows up"
