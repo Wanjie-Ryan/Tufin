@@ -117,5 +117,41 @@ private UserRepository repo;
 
 @component
 public class EmailValidator{
-//
+// a general purpose Spring managed object
+// use when it doesn't fit any specific category
 }
+- tells spring: "manage this class as a bean"
+- use for: utility classes, helpers, general components
+
+2. @service
+
+@service
+public class UserService{
+// contains business logic
+// eg. creating users, validating users
+}
+
+- tells spring "this is a service layer class"
+- used for business logic, processing, rules
+
+3. @Repository
+
+@Repository
+public class userRepo{
+// handles DB ops
+}
+
+4. @RestController
+
+@RestController
+public class UserController{
+// handles httprequests (REST)
+}
+
+# How the layers connect
+
+- HTTP REQUEST -> RestController -> service -> Repository -> DB
+
+# PART 6 - SPRING BEAN SCOPES
+- A bean is just any object that spring manages.
+- 
