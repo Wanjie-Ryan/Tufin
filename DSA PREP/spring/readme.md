@@ -369,5 +369,31 @@ public class OrderService {
    3b. Method throws      → Spring rolls back everything automatically
 
 
+# Review 3
+public String firstActiveEmail(List<User> users) {
+return users.stream()
+.filter(User::isActive)
+.map(User::getEmail)
+.findFirst()
+.get(); // ❌ dangerous
+}
 
+The bug:
+.findFirst() returns an Optional<String>
+.get() on an empty Optional throws NoSuchElementException
+
+If no active users exist → Optional is empty → .get() crashes
+
+The fix:
+.orElse(null)         → return null if not found
+.orElse("")           → return empty string if not found
+.orElseThrow(...)     → throw meaningful exception
+
+
+// ✅ safe version
+return users.stream()
+.filter(User::isActive)
+.map(User::getEmail)
+.findFirst()
+.orElse(null); // return null if no active user found
 
