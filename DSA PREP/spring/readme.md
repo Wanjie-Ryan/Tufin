@@ -343,8 +343,31 @@ public class FirewallService {
 
 # Transactions
 - Operations must succeded or fail all together, no in between
+
+# ACID
+
 - ATOMICITY - succeed or fail together
 - Consistency - DB must move from one valid state to another
 - Isolation - conccurent transactions should not know of each others partial states
 - Durability - After comitting, the change should be saved permanently
+
+@Service
+public class OrderService {
+
+    @Transactional  // ← this one annotation does all the work
+    public void createOrder(Order order) {
+        saveOrder(order);       // step 1
+        processPayment(order);  // step 2 — if this throws exception
+        updateInventory(order); // step 3 — this never runs
+        // @Transactional automatically rolls back step 1
+    }
+}
+
+1. Before method runs  → Spring opens a database transaction
+2. Method runs         → all operations join the same transaction
+   3a. Method succeeds    → Spring commits everything to database
+   3b. Method throws      → Spring rolls back everything automatically
+
+
+
 
